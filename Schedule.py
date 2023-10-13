@@ -5,15 +5,17 @@ from DataClasses import Lesson, ScheduleDay
 
 
 class Schedule:
-    def __init__(self, day_number=0):
+    def __init__(self, day_number=0, group_id=799359428):
+        self.group_id = group_id
         self.week = week_calc(day_number)
         self.week_url = self._get_url()
         self.is_alive = self.alive_check()
         self.soup = None
 
     def _get_url(self):
-        self.week_url = f'https://ssau.ru/rasp?groupId=799359428&selectedWeek={self.week}'
+        self.week_url = f'https://ssau.ru/rasp?groupId={self.group_id}&selectedWeek={self.week}'
         return self.week_url
+
 
     def _parse_time(self):
         time_list = []
