@@ -6,15 +6,6 @@ from src.OutputClass import CustomOutput
 from src.UtilityFunctions import picture_choose, day_calc
 from src.ScheduleClass import Schedule
 from src.MessagesFile import DEAD_MESSAGE, GREETING_MESSAGE, HELP_MESSAGE
-from config import polina_id
-
-
-def group_choose(day, message):
-    if message.from_user.id == polina_id:
-        schedule = Schedule(day_difference=day, group_id=701780995)
-    else:
-        schedule = Schedule(day_difference=day, group_id=799359428)
-    return schedule
 
 
 @dp.message(CommandStart())
@@ -30,7 +21,7 @@ async def choose_schedule(message: aiogram.types.Message):
 
 @dp.message(lambda message: message.text.lower() == 'сегодня')
 async def today_schedule(message: aiogram.types.Message):
-    schedule = group_choose(0, message)
+    schedule = Schedule(message.from_user.id, day_difference=0)
     picture = picture_choose()
     if schedule.is_alive:
         out = CustomOutput(schedule.get_week())
@@ -41,7 +32,7 @@ async def today_schedule(message: aiogram.types.Message):
 
 @dp.message(lambda message: message.text.lower() == 'завтра')
 async def tomorrow_schedule(message: aiogram.types.Message):
-    schedule = group_choose(1, message)
+    schedule = Schedule(message.from_user.id, day_difference=1)
     picture = picture_choose()
     if schedule.is_alive:
         out = CustomOutput(schedule.get_week())
@@ -52,7 +43,7 @@ async def tomorrow_schedule(message: aiogram.types.Message):
 
 @dp.message(lambda message: message.text.lower() == 'послезавтра')
 async def double_tomorrow_schedule(message: aiogram.types.Message):
-    schedule = group_choose(2, message)
+    schedule = Schedule(message.from_user.id, day_difference=2)
     picture = picture_choose()
     if schedule.is_alive:
         out = CustomOutput(schedule.get_week())
@@ -64,7 +55,7 @@ async def double_tomorrow_schedule(message: aiogram.types.Message):
 
 @dp.message(lambda message: message.text.lower() == 'текущая неделя' or message.text.lower() == 'текущая')
 async def current_week_schedule(message: aiogram.types.Message):
-    schedule = group_choose(0, message)
+    schedule = Schedule(message.from_user.id, day_difference=0)
     picture = picture_choose()
     if schedule.is_alive:
         out = CustomOutput(schedule.get_week())
@@ -76,7 +67,7 @@ async def current_week_schedule(message: aiogram.types.Message):
 
 @dp.message(lambda message: message.text.lower() == 'следующая неделя' or message.text.lower() == 'следующая')
 async def next_week_schedule(message: aiogram.types.Message):
-    schedule = group_choose(7, message)
+    schedule = Schedule(message.from_user.id, day_difference=7)
     picture = picture_choose()
     if schedule.is_alive:
         out = CustomOutput(schedule.get_week())

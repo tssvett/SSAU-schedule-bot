@@ -1,22 +1,25 @@
+import re
 from UtilityFunctions import week_calc
 from bs4 import BeautifulSoup
 from requests import get
 from src.DataClasses.DayClass import Lesson, Day
 from src.LoggerClass import Logger
+from src.Database.DatabaseClass import db
+
 
 
 class Schedule:
     """
     Schedule class for parsing schedule from SSAU website.
     """
-    def __init__(self, day_difference=0, group_id=799359428):
+    def __init__(self, user_id,  day_difference=0,):
         """
 
         :param day_difference: user for output schedule for different days (difference between today and variable day)
         :param group_id: used for output schedule for different groups
         """
         self.logger = Logger('Schedule')
-        self.group_id = group_id
+        self.group_id = db.get_group(user_id)
         self.week = week_calc(day_difference)
         self.week_url = self._get_url()
         self.is_alive = self.alive_check()
@@ -112,3 +115,18 @@ class Schedule:
     def alive_check(self):
         response = get(self.week_url)
         return response.ok
+
+    def get_faculties(self):
+        response = get('https://ssau.ru/rasp')
+        page = response.text
+        soup = BeautifulSoup(page, features='html.parser')
+        return {item.a.text.strip(): int(re.search(r'\d+', item.a.attrs['href']).group())
+                for item in soup.find_all('div', class_='faculties__item')}
+
+    @staticmethod
+    def get_groups(faculty: int, course: int):
+        response = get(f'https://ssau.ru/rasp/faculty/{faculty}?course={course}')
+        page = response.text
+        soup = BeautifulSoup(page, features='html.parser')
+        return {item.text.strip(): int(re.search(r'\d+', item.attrs['href']).group())
+                for item in soup.find_all('a', class_='group-catalog__group')}
