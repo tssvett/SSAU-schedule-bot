@@ -1,6 +1,7 @@
 import asyncio
-from handlers.OutputHandlers import *
-from handlers.StatesHandlers import *
+from src.handlers.OutputHandlers import *
+from src.handlers.StatesHandlers import *
+from src.handlers.AdminHandlers import *
 
 
 async def main():

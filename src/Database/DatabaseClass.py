@@ -6,13 +6,12 @@ from config import facilities
 
 class Database:
     def __init__(self):
-        self.path = pathlib.Path(sys.argv[0]).parent /'Database' / 'database.db'
+        self.path = pathlib.Path(sys.argv[0]).parent /'src'/'Database' / 'database.db'
         print(self.path)
         self.connection = sqlite3.connect(self.path, check_same_thread=False)
         self.cursor = self.connection.cursor()
 
     def is_registered(self, user_id):
-        #Тут баг! надо смотреть по наличию записи в бд + его текущему состоянию
         self.cursor.execute('SELECT * FROM BotInformation WHERE user_id = ? AND current_state = "REGISTERED"', (user_id,))
         if self.cursor.fetchone() is None:
             return False
@@ -91,6 +90,11 @@ class Database:
         self.cursor.execute('SELECT course_id FROM BotInformation WHERE user_id = ?', (user_id,))
         course_id = self.cursor.fetchone()
         return course_id[0]
+
+    def get_users_amount(self) -> int:
+        self.cursor.execute('SELECT user_id FROM BotInformation')
+        users_list = self.cursor.fetchall()
+        return len(users_list)
 
 
 db = Database()

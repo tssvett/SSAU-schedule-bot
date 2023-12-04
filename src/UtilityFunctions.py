@@ -12,9 +12,8 @@ def picture_choose(file_name: str = None) -> FSInputFile:
     :return: random or selected FSInputFile photo
     """
     if file_name is None:
-        file_name = choice(listdir(dirname(dirname(__file__)) + r'\pictures'))
-        print(file_name)
-    path = dirname(dirname(__file__)) + f'\pictures\{file_name}'
+        file_name = choice(listdir(dirname(dirname(__file__)) + r'/pictures'))
+    path = dirname(dirname(__file__)) + f'/pictures/{file_name}'
     picture = FSInputFile(path, filename=file_name)
     return picture
 
@@ -31,3 +30,6 @@ def day_calc(day_number=0) -> int:
 def week_calc(day_number=0) -> int:
     current_day = datetime.datetime.now() + datetime.timedelta(days=day_number)
     return current_day.isocalendar()[1] - datetime.datetime(2023, 9, 1).isocalendar()[1] + 1
+
+
+picture_choose()

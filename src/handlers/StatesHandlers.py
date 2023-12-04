@@ -7,15 +7,16 @@ from src.MessagesFile import START_REGISTER_MESSAGE, INCORRECT_FACULTY_MESSAGE, 
     INCORRECT_COURSE_MESSAGE, CORRECT_COURSE_MESSAGE, INCORRECT_GROUP_MESSAGE, CORRECT_GROUP_MESSAGE,\
     SUCCESS_REGISTER_MESSAGE, ALREADY_REGISTERED_MESSAGE, REPEAT_REGISTER_MESSAGE
 from src.Database.DatabaseClass import db
-from config import facilities
 from src.ScheduleClass import Schedule
+from config import facilities
+
 
 
 class RegistrationForm(StatesGroup):
     FACULTY_WAITING = State()
     COURSE_WAITING = State()
     GROUP_WAITING = State()
-    FINISH = State()
+    REGISTERED = State()
 
 
 def is_correct_faculty(message: aiogram.types.Message):
@@ -83,6 +84,7 @@ async def group_choose(message: aiogram.types.Message, state: FSMContext):
         db.update_state(message.from_user.id, 'GROUP_WAITING')
     else:
         await message.answer(CORRECT_GROUP_MESSAGE)
+        await state.set_state(RegistrationForm.REGISTERED)
         db.update_group(message.from_user.id, message.text, groups)
         db.update_state(message.from_user.id, 'REGISTERED')
         await message.answer(SUCCESS_REGISTER_MESSAGE)

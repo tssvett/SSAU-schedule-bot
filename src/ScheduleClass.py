@@ -1,7 +1,7 @@
 import re
-from UtilityFunctions import week_calc
 from bs4 import BeautifulSoup
 from requests import get
+from src.UtilityFunctions import week_calc
 from src.DataClasses.DayClass import Lesson, Day
 from src.LoggerClass import Logger
 from src.Database.DatabaseClass import db

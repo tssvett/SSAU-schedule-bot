@@ -1,10 +1,6 @@
-from config import BBB
-
-
 class CustomOutput:
     def __init__(self, week_to_customize):
         self.week = week_to_customize
-        self.bbb_urls = BBB
 
     def raw(self):
         for day in self.week:
@@ -18,19 +14,20 @@ class CustomOutput:
         header = ''
         body = ''
         if 0 <= day_number <= 5:
-            header += '<b>' + current_day.name + ' ' + current_day.date + '</b>' + '\n'
+            header += '<b>' + current_day.name + ' ' + current_day.date + '</b>' + '\n\n'
             for lesson in current_day.lessons:
                 if not lesson.is_empty:
-                    body += '<i>' + lesson.time + '</i>' + '  ' + lesson.title[0] + '\n'
+                    body += self.add_place_emoji(lesson.place[0]) + ' ' + '<i>' + lesson.time + '</i>' + ' ' + self.add_place_emoji(lesson.place[0]) + '\n'
+                    body += lesson.title[0] + '\n'
                     if len(lesson.groups) > 1:
-                        body += '\n'
+                        #body += '\n'
                         for subgroup in range(len(lesson.teacher)):
                             body += self.get_subgroup(lesson.groups[subgroup]) + ' ' + lesson.teacher[subgroup] + ' ' \
-                                    + self.add_url_to_title(lesson.place[subgroup], lesson.title[subgroup]) + '\n\n'
+                                    + self.add_url_to_title(lesson.place[subgroup]) + '\n'
                     else:
-                        body += lesson.teacher[0] + ' ' + self.add_url_to_title(lesson.place[0], lesson.title[0]) + '\n\n'
+                        body += lesson.teacher[0] + ' ' + self.add_url_to_title(lesson.place[0]) + '\n\n'
             if not body:
-                body += "Пар нет, отдыхам реbyata" + '\n'
+                body += "Пар нет, отдыхаем rеbyata" + '\n'
             return header + body + '\n'
         else:
             print("ты долбаеб?")
@@ -56,10 +53,17 @@ class CustomOutput:
             return tmp
         return group
 
-    def add_url_to_title(self, place, discipline):
+    def add_url_to_title(self, place):
         if place[0] == "O":
-            place = '🟢 '
-            place += '<b>' + f'<a href="{self.bbb_urls[discipline]}">Подключиться</a>' + '</b>'
+            place = ''
         else:
-            place = '<b>' + '<i>' + place + '</i>' + '</b>' + ' 🔴 '
+            place = '<b>' + '<i>' + place + '</i>' + '</b>'
         return place
+
+    def add_place_emoji(self, place):
+        emoji = ''
+        if place[0] == "O":
+            emoji = '🟢 '
+        else:
+            emoji = ' 🔴 '
+        return emoji
