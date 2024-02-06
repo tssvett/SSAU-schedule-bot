@@ -19,17 +19,20 @@ def picture_choose(file_name: str = None) -> FSInputFile:
 
 
 def day_calc(day_number=0) -> int:
-    start_day = datetime.datetime(2023, 8, 21).date()
+    start_day = datetime.datetime(2024, 2, 5).date()
     now = datetime.datetime.now().date()
     now += datetime.timedelta(days=day_number)
     difference = (now - start_day).days
     day = (difference % 7)
+    print("day = " + str(day))
     return day
 
 
 def week_calc(day_number=0) -> int:
     current_day = datetime.datetime.now() + datetime.timedelta(days=day_number)
-    return current_day.isocalendar()[1] - datetime.datetime(2023, 9, 1).isocalendar()[1] + 1
-
-
-picture_choose()
+    print("Сегодня: " + str(current_day))
+    lasted_weeks = 23
+    week = current_day.isocalendar()[1] - datetime.datetime(2024, 2, 5).isocalendar()[1] + 1 + lasted_weeks
+    print("HUINYA:" + str(current_day.isocalendar()[1]))
+    print("week = " + str(week))
+    return week

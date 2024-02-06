@@ -3,13 +3,13 @@ from aiogram.filters.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
 from src.BotFile import dp
-from src.MessagesFile import START_REGISTER_MESSAGE, INCORRECT_FACULTY_MESSAGE, CORRECT_FACULTY_MESSAGE,\
-    INCORRECT_COURSE_MESSAGE, CORRECT_COURSE_MESSAGE, INCORRECT_GROUP_MESSAGE, CORRECT_GROUP_MESSAGE,\
+from src.MessagesFile import START_REGISTER_MESSAGE, INCORRECT_FACULTY_MESSAGE, CORRECT_FACULTY_MESSAGE, \
+    INCORRECT_COURSE_MESSAGE, CORRECT_COURSE_MESSAGE, INCORRECT_GROUP_MESSAGE, CORRECT_GROUP_MESSAGE, \
     SUCCESS_REGISTER_MESSAGE, ALREADY_REGISTERED_MESSAGE, REPEAT_REGISTER_MESSAGE
 from src.Database.DatabaseClass import db
+from src.Filters.RegisterFilter import RegisterFilter
 from src.ScheduleClass import Schedule
 from config import facilities
-
 
 
 class RegistrationForm(StatesGroup):
@@ -88,5 +88,3 @@ async def group_choose(message: aiogram.types.Message, state: FSMContext):
         db.update_group(message.from_user.id, message.text, groups)
         db.update_state(message.from_user.id, 'REGISTERED')
         await message.answer(SUCCESS_REGISTER_MESSAGE)
-
-
