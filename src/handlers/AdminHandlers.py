@@ -8,6 +8,9 @@ from src.MessagesFile import ADMIN_MESSAGE, HELP_ADMIN_MESSAGE, NEW_PICTURE_MESS
     ALREADY_EXIST_PICTURE_MESSAGE
 from src.AdminPanelClass import admin_panel
 from src.Filters.AdminFilter import AdminFilter
+from src.ScheduleClass import Schedule
+from src.OutputClass import CustomOutput
+from src.UtilityFunctions import day_calc
 
 
 @dp.message(Command('amount'), AdminFilter())
@@ -19,6 +22,15 @@ async def choose_schedule(message: aiogram.types.Message):
 @dp.message(Command('admin'), AdminFilter())
 async def admin_message(message: aiogram.types.Message):
     await message.answer(HELP_ADMIN_MESSAGE)
+
+
+@dp.message(Command('rasp'), AdminFilter())
+async def admin_message(message: aiogram.types.Message):
+    schedule = Schedule(message.from_user.id, day_difference=0)
+    print(schedule.week_url)
+    week = schedule.get_week()
+    print(week)
+    #await message.answer(schedule.get_week(), parse_mode='html')
 
 
 @dp.message(lambda message: message.photo, AdminFilter())

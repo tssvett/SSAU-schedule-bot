@@ -27,7 +27,7 @@ class Database:
         :param course_id:
         :return:
         """
-        self.cursor.execute('INSERT INTO BotInformation (user_id, faculty_id, group_id, current_state, course_id) VALUES (?, ?, ?, ?, ?)', (user_id, faculty_id, group_id, current_state, course_id))
+        self.cursor.execute('INSERT INTO BotInformation (user_id, faculty_id, user_id, current_state, course_id) VALUES (?, ?, ?, ?, ?)', (user_id, faculty_id, group_id, current_state, course_id))
         self.connection.commit()
 
     def update_faculty(self, user_id, faculty: str):
@@ -55,10 +55,10 @@ class Database:
         """
         Update group in database
         :param user_id:
-        :param group_id:
+        :param user_id:
         :return:
         """
-        self.cursor.execute('UPDATE BotInformation SET group_id = ? WHERE user_id = ?', (groups.get(group), user_id))
+        self.cursor.execute('UPDATE BotInformation SET user_id = ? WHERE user_id = ?', (groups.get(group), user_id))
         self.connection.commit()
 
     def update_state(self, user_id, current_state: str):
@@ -72,7 +72,7 @@ class Database:
         self.connection.commit()
 
     def get_group(self, user_id):
-        self.cursor.execute('SELECT group_id FROM BotInformation WHERE user_id = ?', (user_id,))
+        self.cursor.execute('SELECT user_id FROM BotInformation WHERE user_id = ?', (user_id,))
         group_id = self.cursor.fetchone()
         return group_id[0]
 

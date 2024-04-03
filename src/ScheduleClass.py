@@ -12,11 +12,11 @@ class Schedule:
     """
     Schedule class for parsing schedule from SSAU website.
     """
-    def __init__(self, user_id,  day_difference=0,):
+    def __init__(self, user_id, day_difference=0):
         """
 
         :param day_difference: user for output schedule for different days (difference between today and variable day)
-        :param group_id: used for output schedule for different groups
+        :param user_id: used for output schedule for different groups
         """
         self.logger = Logger('Schedule')
         self.group_id = db.get_group(user_id)
@@ -104,6 +104,7 @@ class Schedule:
         :return: list(list)
         """
         response = get(self.week_url)
+        print(response.status_code)
         if not response.ok:
             self.logger.send_message('SSAU is down', 'info')
             return None

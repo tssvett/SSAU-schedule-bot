@@ -11,3 +11,4 @@ class Lesson:
     teacher: List
     is_online: bool
     is_empty: bool
+    url: str
